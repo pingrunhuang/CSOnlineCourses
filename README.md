@@ -14,3 +14,6 @@ https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-d
 
 # MIT 6.851 Advanced Data Structures, Spring 2012
 https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-851-advanced-data-structures-spring-2012/
+
+# CS229 Machine Learning
+https://see.stanford.edu/course/cs229

@@ -19,7 +19,9 @@ class AVLNode(BSTNode):
         self.height = height
 
     def update_height(self):
-        self.height = max(self.rnode.height, self.lnode.height) + 1
+        left_height = self.get_left_subtree_height()
+        right_height = self.get_right_subtree_height()
+        self.height = max(left_height, right_height) + 1
 
     def get_left_subtree_height(self):
         if not self.lnode:
@@ -31,13 +33,40 @@ class AVLNode(BSTNode):
             return -1
         return self.rnode.height
     
-    def left_rotate(self, node):
+    def left_rotate(self):
         """
         node's right tree is higher
         """
+        right_subtree = self.rnode
+        self.rnode = right_subtree.lnode
+        right_subtree.lnode.parent = self
+        if self.parent:
+            if self is self.parent.lnode:
+                self.parent.lnode = right_subtree
+            if self is self.parent.rnode:
+                self.parent.rnode = right_subtree
+            right_subtree.parent = self.parent
+        else:
+            right_subtree.parent = None
+        self.parent = right_subtree
+        right_subtree.lnode = self
+        self.update_height()
+        self.lnode.update_height()
+        self.rnode.update_height()
+
+    def right_rotate(self):
         pass
-    def right_rotate(self, node):
-        pass 
+    
+    def rebalance(self):
+        pass
+
+    def validate(self):
+        super(AVLNode, self).validate()
+        left_height = self.get_left_subtree_height()
+        right_height = self.get_right_subtree_height()
+        if abs(left_height - right_height) > 1:
+            raise RuntimeError("AVL property violation")
+
 
 class AVL(ABC):
     """

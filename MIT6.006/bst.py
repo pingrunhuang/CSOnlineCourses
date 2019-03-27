@@ -85,12 +85,18 @@ class BSTNode:
         return the deleted node
         """
         if self.rnode is None or self.lnode is None:
-            if self is self.parent.lnode:
+            if self.parent and self is self.parent.lnode:
                 self.parent.update_child(self.lnode, direction='left') if self.lnode \
                     else self.parent.update_child(self.rnode, direction='left')
-            else:
+            elif self.parent and  self is self.parent.rnode:
                 self.parent.update_child(self.lnode, direction='right') if self.lnode \
                     else self.parent.update_child(self.rnode, direction='right')
+            else:
+                # self.parent is none, root
+                if self.rnode is not None:
+                    self.rnode.parent = None  
+                else:
+                     self.lnode.parent = None
             return self
         else:
             subsitute = self.next_larger()
@@ -102,7 +108,7 @@ class BSTNode:
         """
         delete related
 
-        return an element just larger then the current node. None if not found
+        return an element just larger then the current node. None if the current node is root
         """
         if self.rnode:
             return self.rnode.find_min()
@@ -199,6 +205,10 @@ class BST:
             self.root.validate()
 
 class RunWayReservationSystem(BST):
+    """
+    essentially is the implementation of min bst
+    """
+
     def __init__(self, times):
         pass
     

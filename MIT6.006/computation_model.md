@@ -11,3 +11,5 @@
    1. list is array 
    2. list.append(x): table doubling O(1) time 
    3. list.sort(): O(nlogn)
+
+4. Comparison model
