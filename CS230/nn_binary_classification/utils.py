@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import tanh
+import matplotlib.pyplot as plt
 
 def sigmoid(Z):
     """
@@ -219,6 +220,87 @@ def L_model_forward(X, parameters):
     caches.append(cache)
     
     assert(AL.shape == (1,X.shape[1]))
-            
     return AL, caches
 
+
+
+def load_planar_dataset(randomness, seed):
+    
+    np.random.seed(seed)
+    
+    m = 50
+    N = int(m/2) # number of points per class
+    D = 2 # dimensionality
+    X = np.zeros((m,D)) # data matrix where each row is a single example
+    Y = np.zeros((m,1), dtype='uint8') # labels vector (0 for red, 1 for blue)
+    a = 2 # maximum ray of the flower
+
+    for j in range(2):
+        
+        ix = range(N*j,N*(j+1))
+        if j == 0:
+            t = np.linspace(j, 4*3.1415*(j+1),N) #+ np.random.randn(N)*randomness # theta
+            r = 0.3*np.square(t) + np.random.randn(N)*randomness # radius
+        if j == 1:
+            t = np.linspace(j, 2*3.1415*(j+1),N) #+ np.random.randn(N)*randomness # theta
+            r = 0.2*np.square(t) + np.random.randn(N)*randomness # radius
+            
+        X[ix] = np.c_[r*np.cos(t), r*np.sin(t)]
+        Y[ix] = j
+        
+    X = X.T
+    Y = Y.T
+
+    return X, Y
+
+def plot_decision_boundary(model, X, y):
+    # Set min and max values and give it some padding
+    x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1
+    y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1
+    h = 0.01
+    # Generate a grid of points with distance h between them
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    # Predict the function value for the whole grid
+    Z = model(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    # Plot the contour and training examples
+    plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
+    plt.ylabel('x2')
+    plt.xlabel('x1')
+    plt.scatter(X[0, :], X[1, :], c=y, cmap=plt.cm.Spectral)
+    plt.show()
+
+
+def predict(X, y, forward_propagation, parameters):
+    """
+    This function is used to predict the results of a  n-layer neural network.
+    
+    Arguments:
+    X -- data set of examples you would like to label
+    parameters -- parameters of the trained model
+    
+    Returns:
+    p -- predictions for the given dataset X
+    """
+    
+    m = X.shape[1]
+    p = np.zeros((1,m), dtype = np.int)
+    
+    # Forward propagation
+    a3, caches = forward_propagation(X, parameters)
+    
+    # convert probas to 0/1 predictions
+    for i in range(0, a3.shape[1]):
+        if a3[0,i] > 0.5:
+            p[0,i] = 1
+        else:
+            p[0,i] = 0
+
+    #print ("predictions: " + str(p[0,:]))
+    #print ("true labels: " + str(y[0,:]))
+    print("Accuracy: "  + str(np.mean((p[0,:] == y[0,:]))))
+    
+    return p
+
+def plot_cost():
+    pass
