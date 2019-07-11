@@ -9,6 +9,7 @@ Heap is an array that implement the priority queue but satisfy the properties th
 One can imagine it as a tree 
 """
 
+
 class MaxHeap:
     """
     same goes for MinHeap

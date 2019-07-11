@@ -32,7 +32,6 @@ new_m = 2*m think of the cost of insertion.
 
 # Amortization is the reason why choosing 2*m as the new size of the grown table.
 
-
 """
 class RollingHash:
     def __init__(self, base, p):

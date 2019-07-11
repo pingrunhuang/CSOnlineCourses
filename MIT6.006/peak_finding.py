@@ -15,7 +15,13 @@ solution 2: T(n,m) = T(n,m/2) + O(n)=O(log(2)(m))*O(n) if you don't use divide a
     O(log(m))*O(log(2)(n)) if use divide and conquer strategy on each col
 """
 
+
 class PeakFinding:
+
+    """
+    why BST work: think about the case arr=[1,4,2,3,5,6,7,8,9,10], in the first iteration middle = 4,
+    next arr[4-1]<arr[4] and arr[4]>arr[5] so we go to the righ part and search till the end. 10 is a valid peak
+    """
     def devideConquer1d(self, arr):
         return self._devideConquer1d(arr, 0, len(arr)-1)
     
